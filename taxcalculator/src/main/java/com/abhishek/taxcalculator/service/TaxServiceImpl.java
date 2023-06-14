@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaxServiceImpl implements TaxService {
 
-    private Tax tax;
+    private final Tax tax;
 
     public TaxServiceImpl(Tax tax) {
         this.tax = tax;
@@ -16,5 +16,10 @@ public class TaxServiceImpl implements TaxService {
     @Override
     public void chooseRegime(Regime regime) {
         tax.setRegime(regime);
+    }
+
+    @Override
+    public Regime getRegime() {
+        return tax.getRegime();
     }
 }

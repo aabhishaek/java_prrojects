@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TaxCalculator {
 
-    private static FINAL BigDecimal = new BigDecimal(50000);
+    private static FINAL final BigDecimal STANDARD_DEDUCTION = new BigDecimal(50000);
 
     /**
      * Calculates the total taxable income based on the given salary
@@ -22,17 +22,20 @@ public class TaxCalculator {
         BigDecimal totalTaxableIncome = BigDecimal.ZERO;
 
         BigDecimal totalSalary = salary.getTotal();
+        BigDecimal totalDeductions = salary.getDeductions();
+
         List<TaxSlabs> slabs = TaxSlabs.getSlabsForGivenRegime(Regime.OLD_REGIME);
 
-        for (TaxSlabs slab : slabs) {
-            BigDecimal payableTaxForSlab = BigDecimal.ZERO;
+        // Subtract Standard deductions
+        totalSalary = totalSalary.subtract(totalDeductions);
+        totalSalary = totalSalary.subtract(STANDARD_DEDUCTION);
 
+        for (TaxSlabs slab : slabs) {
             if (totalSalary.compareTo(BigDecimal.ZERO) <= 0) {
                 break;
             }
 
-            // Subtract Standard deductions
-
+            BigDecimal payableTaxForSlab = BigDecimal.ZERO;
             if (slab.getPercentageOfTax() > 0) {
                 if (new BigDecimal(slab.getMaxSalaryRange()).compareTo(totalSalary) >= 0) {
                     payableTaxForSlab = totalSalary.multiply(new BigDecimal(slab.getPercentageOfTax() / 100));

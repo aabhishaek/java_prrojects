@@ -19,21 +19,37 @@ public class Salary {
     private BigDecimal basic;
     private BigDecimal hra;
     private BigDecimal specialAllowance;
+    private BigDecimal employerEPFContribution;
+    private BigDecimal professionalTax;
     private Map<String, BigDecimal> otherAllowances;
+
+    private Map<String, BigDecimal> deductions;
 
     public BigDecimal getTotal() {
         BigDecimal totalSalary = BigDecimal.ZERO;
 
-        BigDecimal otherAllowancesTotal = BigDecimal.ZERO;
-        for (String allowance : otherAllowances.keySet()) {
-            otherAllowancesTotal = otherAllowancesTotal.add(otherAllowances.get(allowance));
-        }
 
         totalSalary = totalSalary.add(basic);
         totalSalary = totalSalary.add(hra);
         totalSalary = totalSalary.add(specialAllowance);
-        totalSalary = totalSalary.add(otherAllowancesTotal);
+
+        for (String allowance : otherAllowances.keySet()) {
+            totalSalary = totalSalary.add(otherAllowances.get(allowance));
+        }
 
         return totalSalary;
+    }
+
+    public BigDecimal getDeductions() {
+        BigDecimal totalDeductions = BigDecimal.ZERO;
+
+        totalDeductions = totalDeductions.add(employerEPFContribution);
+        totalDeductions = totalDeductions.add(professionalTax);
+
+        for (String deduction : deductions.keySet()) {
+            totalDeductions = totalDeductions.add(deductions.get(deduction));
+        }
+
+        return totalDeductions;
     }
 }

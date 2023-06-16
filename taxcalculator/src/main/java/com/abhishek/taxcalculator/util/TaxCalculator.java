@@ -1,7 +1,7 @@
 package com.abhishek.taxcalculator.util;
 
 import com.abhishek.taxcalculator.enums.Regime;
-import com.abhishek.taxcalculator.enums.TaxSlabs;
+import com.abhishek.taxcalculator.enums.TaxSlab;
 import com.abhishek.taxcalculator.model.Salary;
 
 import java.math.BigDecimal;
@@ -24,13 +24,13 @@ public class TaxCalculator {
         BigDecimal totalSalary = salary.getTotal();
         BigDecimal totalDeductions = salary.getDeductions();
 
-        List<TaxSlabs> slabs = TaxSlabs.getSlabsForGivenRegime(Regime.OLD_REGIME);
+        List<TaxSlab> slabs = TaxSlab.getSlabsForGivenRegime(Regime.OLD_REGIME);
 
         // Subtract Standard deductions
         totalSalary = totalSalary.subtract(totalDeductions);
         totalSalary = totalSalary.subtract(STANDARD_DEDUCTION);
 
-        for (TaxSlabs slab : slabs) {
+        for (TaxSlab slab : slabs) {
             if (totalSalary.compareTo(BigDecimal.ZERO) <= 0) {
                 break;
             }

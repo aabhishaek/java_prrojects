@@ -11,7 +11,7 @@ import static com.abhishek.taxcalculator.enums.Regime.OLD_REGIME;
 
 @Getter
 @AllArgsConstructor
-public enum TaxSlabs {
+public enum TaxSlab {
 
     // OLD REGIME
     SLAB_1_OLD(0, 250000 , 0, OLD_REGIME),
@@ -32,10 +32,10 @@ public enum TaxSlabs {
     private int percentageOfTax;
     private Regime regime;
 
-    public static List<TaxSlabs> getSlabsForGivenRegime(Regime regime) {
-        List<TaxSlabs> slabs = new ArrayList<>();
+    public static List<TaxSlab> getSlabsForGivenRegime(Regime regime) {
+        List<TaxSlab> slabs = new ArrayList<>();
 
-        for (TaxSlabs slab : TaxSlabs.values()) {
+        for (TaxSlab slab : TaxSlab.values()) {
             if (slab.getRegime() == regime) {
                 slabs.add(slab);
             }

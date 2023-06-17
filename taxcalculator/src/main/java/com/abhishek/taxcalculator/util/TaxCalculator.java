@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TaxCalculator {
 
-    private static FINAL final BigDecimal STANDARD_DEDUCTION = new BigDecimal(50000);
+    private static final BigDecimal STANDARD_DEDUCTION = new BigDecimal(50000);
 
     /**
      * Calculates the total taxable income based on the given salary
@@ -24,36 +24,39 @@ public class TaxCalculator {
         BigDecimal totalSalary = salary.getTotal();
         BigDecimal totalDeductions = salary.getDeductions();
 
-        List<TaxSlab> slabs = TaxSlab.getSlabsForGivenRegime(Regime.OLD_REGIME);
-
         // Subtract Standard deductions
         totalSalary = totalSalary.subtract(totalDeductions);
-        totalSalary = totalSalary.subtract(STANDARD_DEDUCTION);
+        final BigDecimal totalSalaryWithDeductions = totalSalary.subtract(STANDARD_DEDUCTION);
 
-        for (TaxSlab slab : slabs) {
-            if (totalSalary.compareTo(BigDecimal.ZERO) <= 0) {
+        List<TaxSlab> applicableSlabs = TaxSlab.getSlabsForGivenRegime(Regime.OLD_REGIME);
+
+        BigDecimal tempSalaryTotal = new BigDecimal(totalSalaryWithDeductions.toString());
+
+        for (int i = 0; i < applicableSlabs.size(); i++) {
+            TaxSlab slab = applicableSlabs.get(i);
+            if (tempSalaryTotal.compareTo(BigDecimal.ZERO) <= 0) {
                 break;
             }
 
-            BigDecimal payableTaxForSlab = BigDecimal.ZERO;
-            if (slab.getPercentageOfTax() > 0) {
-                if (new BigDecimal(slab.getMaxSalaryRange()).compareTo(totalSalary) >= 0) {
-                    payableTaxForSlab = totalSalary.multiply(new BigDecimal(slab.getPercentageOfTax() / 100));
+            if (slab.getUpperLimit() > 0) {
+                if (totalSalaryWithDeductions.compareTo(new BigDecimal(slab.getUpperLimit())) > 0) {
+                    totalTaxableIncome = totalTaxableIncome.add(new BigDecimal(slab.getMaxTax()));
                 } else {
-
-                    if (slab.getMaxSalaryRange() == Integer.MAX_VALUE) {
-                        payableTaxForSlab = totalSalary.multiply(new BigDecimal(slab.getPercentageOfTax() / 100));
-                    } else {
-                        payableTaxForSlab = new BigDecimal(slab.getMaxSalaryRange())
-                                .multiply(new BigDecimal(slab.getPercentageOfTax() / 100));
-                    }
+                    BigDecimal percent = new BigDecimal(slab.getPercentageOfTax()).divide(new BigDecimal(100));
+                    BigDecimal payableTax = tempSalaryTotal.multiply(percent);
+                    totalTaxableIncome = totalTaxableIncome.add(payableTax);
                 }
-                totalTaxableIncome = totalTaxableIncome.add(payableTaxForSlab);
+            } else {
+                BigDecimal percent = new BigDecimal(slab.getPercentageOfTax()).divide(new BigDecimal(100));
+                BigDecimal payableTax = tempSalaryTotal.multiply(percent);
+                totalTaxableIncome = totalTaxableIncome.add(payableTax);
             }
-            totalSalary = totalSalary.subtract(new BigDecimal(slab.getMaxSalaryRange()));
+
+            BigDecimal previousSlabLimit = i > 0 ? new BigDecimal(applicableSlabs.get(i - 1).getUpperLimit()) : BigDecimal.ZERO;
+            tempSalaryTotal = tempSalaryTotal.subtract(new BigDecimal(slab.getUpperLimit()).subtract(previousSlabLimit));
+
         }
 
-        return totalTaxableIncome;
-
+        return new BigDecimal(totalTaxableIncome.intValue());
     }
 }

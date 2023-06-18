@@ -3,7 +3,7 @@ package com.abhishek.taxcalculator.service;
 import com.abhishek.taxcalculator.enums.Regime;
 import com.abhishek.taxcalculator.model.Salary;
 import com.abhishek.taxcalculator.model.Tax;
-import com.abhishek.taxcalculator.util.TaxCalculator;
+import com.abhishek.taxcalculator.util.TaxUtil;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -33,7 +33,7 @@ public class TaxServiceImpl implements TaxService {
     public BigDecimal calculateTotalTaxableIncome(String userId) {
         Salary salary = salaryService.getSalary(userId);
 
-        TaxCalculator calculator = new TaxCalculator();
-        return calculator.calculateTotalTaxableIncomeFromSalary(salary);
+        TaxUtil calculator = new TaxUtil();
+        return calculator.calculateTotalTaxApplicableForGivenSalary(salary);
     }
 }

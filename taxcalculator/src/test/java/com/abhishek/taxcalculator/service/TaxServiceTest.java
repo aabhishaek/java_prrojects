@@ -29,7 +29,7 @@ public class TaxServiceTest {
     }
 
     @Test
-    public void shouldCalculateTaxableIncomeForGivenSalary() {
+    public void shouldCalculateTaxApplicableForGivenSalary() {
         Salary salary = Salary.builder().userId("user_1")
                 .userName("Basic Person")
                 .basic(new BigDecimal(431364))
@@ -52,9 +52,9 @@ public class TaxServiceTest {
                 .build();
 
         salaryService.storeSalary(salary);
-        BigDecimal totalTaxableIncome = taxService.calculateTotalTaxableIncome(salary.getUserId());
+        BigDecimal taxApplicable = taxService.calculateTotalTaxableIncome(salary.getUserId());
 
-        Assertions.assertEquals(new BigDecimal(110880), totalTaxableIncome);
+        Assertions.assertEquals(new BigDecimal(110880), taxApplicable);
 
     }
 

@@ -1,5 +1,6 @@
 package com.abhishek.taxcalculator.model;
 
+import com.abhishek.taxcalculator.util.SalaryCalculator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +23,6 @@ public class SalaryTest {
                 }})
                 .build();
 
-        Assertions.assertEquals(new BigDecimal(286400), inputSalary.getTotal());
+        Assertions.assertEquals(new BigDecimal(286400), SalaryCalculator.getTotalSalary(inputSalary));
     }
 }

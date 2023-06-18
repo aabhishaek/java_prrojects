@@ -22,34 +22,5 @@ public class Salary {
     private BigDecimal employerEPFContribution;
     private BigDecimal professionalTax;
     private Map<String, BigDecimal> otherAllowances;
-
     private Map<String, BigDecimal> deductions;
-
-    public BigDecimal getTotal() {
-        BigDecimal totalSalary = BigDecimal.ZERO;
-
-
-        totalSalary = totalSalary.add(basic);
-        totalSalary = totalSalary.add(hra);
-        totalSalary = totalSalary.add(specialAllowance);
-
-        for (String allowance : otherAllowances.keySet()) {
-            totalSalary = totalSalary.add(otherAllowances.get(allowance));
-        }
-
-        return totalSalary;
-    }
-
-    public BigDecimal getDeductions() {
-        BigDecimal totalDeductions = BigDecimal.ZERO;
-
-        totalDeductions = totalDeductions.add(employerEPFContribution);
-        totalDeductions = totalDeductions.add(professionalTax);
-
-        for (String deduction : deductions.keySet()) {
-            totalDeductions = totalDeductions.add(deductions.get(deduction));
-        }
-
-        return totalDeductions;
-    }
 }

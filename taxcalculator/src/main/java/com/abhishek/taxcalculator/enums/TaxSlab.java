@@ -17,7 +17,7 @@ public enum TaxSlab {
     SLAB_1_OLD(250000, 0, 0, OLD_REGIME),
     SLAB_2_OLD(500000, 5, 12500, OLD_REGIME),
     SLAB_3_OLD(1000000, 20, 100000, OLD_REGIME),
-    SLAB_4_OLD(0, 30, 0, OLD_REGIME),
+    SLAB_4_OLD(null, 30, null, OLD_REGIME),
 
     // New Regime
     SLAB_1_NEW(300000, 0, 0, NEW_REGIME),
@@ -25,11 +25,11 @@ public enum TaxSlab {
     SLAB_3_NEW(900000, 10, 30000, NEW_REGIME),
     SLAB_4_NEW(1200000, 15, 45000, NEW_REGIME),
     SLAB_5_NEW(1500000, 20, 60000, NEW_REGIME),
-    SLAB_6_NEW(0, 30, 0, NEW_REGIME);
+    SLAB_6_NEW(null, 30, null, NEW_REGIME);
 
-    private int upperLimit;
-    private int percentageOfTax;
-    private int maxTax;
+    private Integer upperLimit;
+    private Integer percentageOfTax;
+    private Integer maxTax;
     private Regime regime;
 
     public static List<TaxSlab> getSlabsForGivenRegime(Regime regime) {
@@ -39,7 +39,7 @@ public enum TaxSlab {
     }
 
     public BigDecimal getUpperLimit() {
-        return new BigDecimal(upperLimit);
+        return upperLimit != null ? new BigDecimal(upperLimit) : null;
     }
 
     public BigDecimal getPercentageOfTax() {
@@ -47,7 +47,7 @@ public enum TaxSlab {
     }
 
     public BigDecimal getMaxTax() {
-        return new BigDecimal(maxTax);
+        return maxTax != null ? new BigDecimal(maxTax) : null;
     }
 
     public Regime getRegime() {

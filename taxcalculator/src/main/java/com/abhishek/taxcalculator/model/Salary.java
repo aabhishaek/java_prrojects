@@ -19,5 +19,8 @@ public class Salary {
     private BigDecimal basic;
     private BigDecimal hra;
     private BigDecimal specialAllowance;
+    private BigDecimal employerEPFContribution;
+    private BigDecimal professionalTax;
     private Map<String, BigDecimal> otherAllowances;
+    private Map<String, BigDecimal> deductions;
 }

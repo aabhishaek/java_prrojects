@@ -33,7 +33,7 @@ public class TaxServiceImpl implements TaxService {
     public BigDecimal calculateTotalTaxableIncome(String userId) {
         Salary salary = salaryService.getSalary(userId);
 
-        TaxUtil calculator = new TaxUtil();
+        TaxUtil calculator = new TaxUtil(tax.getRegime());
         return calculator.calculateTotalTaxApplicableForGivenSalary(salary);
     }
 }

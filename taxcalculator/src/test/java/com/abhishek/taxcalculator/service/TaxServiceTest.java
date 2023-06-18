@@ -51,6 +51,7 @@ public class TaxServiceTest {
                 }})
                 .build();
 
+        taxService.chooseRegime(Regime.OLD_REGIME);
         salaryService.storeSalary(salary);
         BigDecimal taxApplicable = taxService.calculateTotalTaxableIncome(salary.getUserId());
 

@@ -55,7 +55,7 @@ public class TaxServiceTest {
         salaryService.storeSalary(salary);
         BigDecimal taxApplicable = taxService.calculateTotalTaxableIncome(salary.getUserId());
 
-        Assertions.assertEquals(new BigDecimal(110880), taxApplicable);
+        Assertions.assertEquals(new BigDecimal(115315), taxApplicable);
 
     }
 

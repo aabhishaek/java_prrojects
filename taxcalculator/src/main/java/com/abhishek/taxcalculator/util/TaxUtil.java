@@ -9,13 +9,15 @@ import java.math.RoundingMode;
 import java.util.List;
 
 public class TaxUtil {
+    private static final BigDecimal STANDARD_DEDUCTION = new BigDecimal(50000);
+    private static final BigDecimal EDUCATION_CESS_PERCENT = new BigDecimal(4);
+
 
     private Regime chosenRegime;
+
     public TaxUtil(Regime regime) {
         this.chosenRegime = regime;
     }
-
-    private static final BigDecimal STANDARD_DEDUCTION = new BigDecimal(50000);
 
     private BigDecimal calculateTaxableIncomeFromSalary(Salary salary) {
         return SalaryCalculator.getTotalSalary(salary)
@@ -43,7 +45,7 @@ public class TaxUtil {
                     .divide(new BigDecimal(100), 2, RoundingMode.HALF_EVEN);
 
             if (upperLimitOfSlab != null && taxableIncomeFromSalary.compareTo(upperLimitOfSlab) > 0) {
-                    totalTaxApplicable = totalTaxApplicable.add(slab.getMaxTax());
+                totalTaxApplicable = totalTaxApplicable.add(slab.getMaxTax());
             } else {
                 BigDecimal payableTax = tempSalaryTotal.multiply(taxPercentForSlab);
                 totalTaxApplicable = totalTaxApplicable.add(payableTax);
@@ -57,6 +59,15 @@ public class TaxUtil {
 
         }
 
-        return new BigDecimal(totalTaxApplicable.intValue());
+        totalTaxApplicable = totalTaxApplicable.setScale(0, RoundingMode.DOWN);
+
+        BigDecimal taxPercentForEducationCess = EDUCATION_CESS_PERCENT.divide(new BigDecimal(100))
+                .setScale(2, RoundingMode.HALF_EVEN);
+        // Add Education cess
+        BigDecimal educationCess = totalTaxApplicable.multiply(taxPercentForEducationCess);
+
+        totalTaxApplicable = totalTaxApplicable.add(educationCess);
+
+        return totalTaxApplicable.setScale(0, RoundingMode.DOWN);
     }
 }

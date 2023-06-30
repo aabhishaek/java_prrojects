@@ -25,7 +25,7 @@ public class InvestmentServiceImpl implements InvestmentService {
                 Map<String, BigDecimal> investmentMapForSection = new HashMap<>();
                 for (InvestmentOptions option : InvestmentOptions.values()) {
                     if (option.getSection() == section) {
-                        investmentMapForSection.putIfAbsent(option.getOption(), BigDecimal.ZERO);
+                        investmentMapForSection.putIfAbsent(option.toString(), BigDecimal.ZERO);
                     }
                 }
                 com.abhishek.taxcalculator.model.Section sectionObj = new com.abhishek.taxcalculator.model.Section();
@@ -37,5 +37,15 @@ public class InvestmentServiceImpl implements InvestmentService {
             }
         }
         return investment;
+    }
+
+    @Override
+    public void declareInvestments(Investment investment) {
+        if (Objects.isNull(investment)) {
+            return;
+        }
+
+        this.investment = investment;
+
     }
 }

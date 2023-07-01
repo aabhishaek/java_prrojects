@@ -34,6 +34,12 @@ public class InvestmentController {
         return ResponseEntity.ok().body(response);
     }
 
+    /**
+     * Method to store the investments done for each section
+     *
+     * @param investment
+     * @return declared investments
+     */
     @PostMapping("/declare")
     public ResponseEntity<APIResponse> declareInvestments(@RequestBody Investment investment) {
         investmentService.declareInvestments(investment);

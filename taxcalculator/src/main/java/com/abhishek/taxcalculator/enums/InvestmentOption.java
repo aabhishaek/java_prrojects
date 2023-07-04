@@ -12,21 +12,21 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public enum InvestmentOption {
 
-    ELSS_FUNDS("ELSS Funds", "", Section.SECTION_80_C),
-    NPS_SCHEME("NPS Scheme", "", Section.SECTION_80_C),
-    ULIP("Life Insurance", "", Section.SECTION_80_C),
-    TAX_SAVING_FD("Tax Saving Fixed Deposit", "", Section.SECTION_80_C),
-    PPF("Public Provident Fund", "", Section.SECTION_80_C),
-    SCSS("Senior Citizen Saving Scheme", "", Section.SECTION_80_C),
-    NSC("National Savings Certificate", "", Section.SECTION_80_C),
-    SSY("Sukanya Samriddhi Yojana", "", Section.SECTION_80_C);
+    ELSS_FUNDS("ELSS Funds", "", SectionName.SECTION_80_C),
+    NPS_SCHEME("NPS Scheme", "", SectionName.SECTION_80_C),
+    ULIP("Life Insurance", "", SectionName.SECTION_80_C),
+    TAX_SAVING_FD("Tax Saving Fixed Deposit", "", SectionName.SECTION_80_C),
+    PPF("Public Provident Fund", "", SectionName.SECTION_80_C),
+    SCSS("Senior Citizen Saving Scheme", "", SectionName.SECTION_80_C),
+    NSC("National Savings Certificate", "", SectionName.SECTION_80_C),
+    SSY("Sukanya Samriddhi Yojana", "", SectionName.SECTION_80_C);
     private String option;
     private String description;
-    private Section section;
+    private SectionName section;
 
-    public static List<InvestmentOption> getOptionsForSection(Section section) {
+    public static List<InvestmentOption> getOptionsForSection(SectionName sectionName) {
         return Arrays.stream(InvestmentOption.values())
-                .filter(option -> option.getSection() == section)
+                .filter(option -> option.getSection() == sectionName)
                 .collect(Collectors.toList());
     }
 }

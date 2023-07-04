@@ -1,6 +1,6 @@
 package com.abhishek.taxcalculator.enums;
 
-public enum Section {
+public enum SectionName {
 
     SECTION_10,
     SECTION_16,

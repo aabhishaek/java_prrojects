@@ -1,14 +1,17 @@
 package com.abhishek.taxcalculator.service;
 
-import com.abhishek.taxcalculator.enums.InvestmentOptions;
-import com.abhishek.taxcalculator.enums.Section;
+import com.abhishek.taxcalculator.enums.InvestmentOption;
+import com.abhishek.taxcalculator.enums.SectionName;
 import com.abhishek.taxcalculator.model.Investment;
+import com.abhishek.taxcalculator.model.Section;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class InvestmentServiceImpl implements InvestmentService {
@@ -18,23 +21,13 @@ public class InvestmentServiceImpl implements InvestmentService {
     @Override
     public Investment getInvestments() {
 
-        if (Objects.isNull(investment)) {
-            investment = new Investment();
+        investment = Optional.ofNullable(investment).orElseGet(() -> new Investment());
 
-            for (Section section: Section.values()) {
-                Map<String, BigDecimal> investmentMapForSection = new HashMap<>();
-                for (InvestmentOptions option : InvestmentOptions.values()) {
-                    if (option.getSection() == section) {
-                        investmentMapForSection.putIfAbsent(option.toString(), BigDecimal.ZERO);
-                    }
-                }
-                com.abhishek.taxcalculator.model.Section sectionObj = new com.abhishek.taxcalculator.model.Section();
-                if (section == Section.SECTION_80_C) {
-                    sectionObj.setSectionName(section);
-                    sectionObj.setInvestments(investmentMapForSection);
-                    investment.setSection80c(sectionObj);
-                }
-            }
+        for (SectionName sectionName : SectionName.values()) {
+
+            Section section = constructSection(investment.getSection(sectionName), sectionName);
+            investment.setSection(section);
+
         }
         return investment;
     }
@@ -48,4 +41,25 @@ public class InvestmentServiceImpl implements InvestmentService {
         this.investment = investment;
 
     }
+
+    private Section constructSection(Section section, SectionName sectionName) {
+        section = Optional.ofNullable(section).orElse(new Section());
+
+        if (section.getSectionName() == null) {
+            section.setSectionName(sectionName);
+        }
+
+        Map<String, BigDecimal> investmentMapForSection = Optional.ofNullable(section.getInvestments())
+                .orElseGet(() -> new HashMap<>());
+
+        List<InvestmentOption> investmentOptionsForSection = InvestmentOption.getOptionsForSection(sectionName);
+
+        for (InvestmentOption option : investmentOptionsForSection) {
+            investmentMapForSection.putIfAbsent(option.toString(), BigDecimal.ZERO);
+        }
+
+        section.setInvestments(investmentMapForSection);
+        return section;
+    }
+
 }

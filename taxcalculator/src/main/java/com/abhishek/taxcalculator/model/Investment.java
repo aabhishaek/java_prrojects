@@ -2,10 +2,12 @@ package com.abhishek.taxcalculator.model;
 
 import com.abhishek.taxcalculator.enums.SectionName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Investment {
 
     private Section section10;

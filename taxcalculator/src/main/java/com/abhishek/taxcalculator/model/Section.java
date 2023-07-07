@@ -1,17 +1,18 @@
 package com.abhishek.taxcalculator.model;
 
+import com.abhishek.taxcalculator.enums.SectionName;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 @Data
 public class Section {
 
-    private String sectionId;
-    private String sectionName;
-    private Map<String, String> investments;
-    private Long totalInvestments;
-    private Long totalExemptions;
+    private SectionName sectionName;
+    private Map<String, BigDecimal> investments;
+    private BigDecimal totalInvestments;
+    private BigDecimal totalExemptions;
 
-    private Long totalDeductions;
+    private BigDecimal totalDeductions;
 }

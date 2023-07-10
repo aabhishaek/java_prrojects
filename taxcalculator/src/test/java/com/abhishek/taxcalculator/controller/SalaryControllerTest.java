@@ -5,6 +5,7 @@ import com.abhishek.taxcalculator.service.SalaryServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -17,7 +18,7 @@ public class SalaryControllerTest {
 
     @BeforeEach
     public void setUp() {
-        this.salaryController = new SalaryController(new SalaryServiceImpl(new HashMap<>()));
+        this.salaryController = new SalaryController(new SalaryServiceImpl(new HashMap<>()), new ResourceBundleMessageSource());
     }
 
     @Test

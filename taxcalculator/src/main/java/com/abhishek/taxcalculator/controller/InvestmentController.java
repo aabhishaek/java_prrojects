@@ -3,6 +3,7 @@ package com.abhishek.taxcalculator.controller;
 import com.abhishek.taxcalculator.common.APIResponse;
 import com.abhishek.taxcalculator.model.Investment;
 import com.abhishek.taxcalculator.service.InvestmentService;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,16 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/investments")
-public class InvestmentController {
+public class InvestmentController extends BaseController {
 
     private InvestmentService investmentService;
 
-    public InvestmentController(InvestmentService investmentService) {
+    public InvestmentController(InvestmentService investmentService, ResourceBundleMessageSource source) {
+        super(source);
         this.investmentService = investmentService;
     }
 
     /**
-     * Method to get details on Tax saving Investments in detail
+     * GET Endpoint which responds with tax saving investments made under each section
      *
      * @return Investment detail containing granular detail of each section
      */
@@ -29,13 +31,11 @@ public class InvestmentController {
     public ResponseEntity<APIResponse> getInvestments() {
 
         Investment investment = investmentService.getInvestments();
-        APIResponse response = new APIResponse();
-        response.setData(investment);
-        return ResponseEntity.ok().body(response);
+        return wrapResponse(investment);
     }
 
     /**
-     * Method to store the investments done for each section
+     * POST Endpoint to declare the invesments made under each section
      *
      * @param investment
      * @return declared investments
@@ -44,9 +44,6 @@ public class InvestmentController {
     public ResponseEntity<APIResponse> declareInvestments(@RequestBody Investment investment) {
         investmentService.declareInvestments(investment);
 
-        APIResponse response = new APIResponse();
-        response.setMessage("Investment declared successfully");
-
-        return ResponseEntity.ok().body(response);
+        return wrapResponse("investment.declare.successful.message");
     }
 }

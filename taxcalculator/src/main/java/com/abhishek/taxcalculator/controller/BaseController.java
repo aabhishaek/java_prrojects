@@ -16,6 +16,9 @@ public class BaseController {
     }
 
     public String getRes(String key) {
+        if (key == "") {
+            return key;
+        }
         return messageSource.getMessage(key, null, Locale.US);
     }
 
